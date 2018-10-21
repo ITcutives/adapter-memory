@@ -4,8 +4,6 @@
  */
 const Boom = require('boom');
 
-let connection;
-
 class AbstractAdapter {
   constructor(entity) {
     this.properties = {};
@@ -45,7 +43,7 @@ class AbstractAdapter {
    * @return {*}
    */
   static get CONN() {
-    return connection;
+    return AbstractAdapter.connection;
   }
 
   /**
@@ -53,7 +51,7 @@ class AbstractAdapter {
    * @param conn
    */
   static set CONN(conn) {
-    connection = conn;
+    AbstractAdapter.connection = conn;
   }
 
   setOriginal(entity) {
@@ -92,9 +90,10 @@ class AbstractAdapter {
 
   remove(key) {
     if (!this.properties) {
-      return;
+      return false;
     }
     delete this.properties[key];
+    return true;
   }
 
   /**
