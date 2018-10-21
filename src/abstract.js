@@ -21,7 +21,7 @@ class AbstractAdapter {
 
   /**
    *
-   * @returns {number}
+   * @return {number}
    * @constructor
    */
   static get PAGESIZE() {
@@ -42,7 +42,7 @@ class AbstractAdapter {
 
   /**
    *
-   * @returns {*}
+   * @return {*}
    */
   static get CONN() {
     return connection;
@@ -112,7 +112,7 @@ class AbstractAdapter {
 
   /**
    *
-   * @returns {string}
+   * @return {string}
    */
   getTableName() {
     throw Boom.badImplementation('[adapter] `getTableName` method not implemented');
@@ -125,7 +125,7 @@ class AbstractAdapter {
    * @param order
    * @param from
    * @param limit
-   * @returns {*|promise}
+   * @return {*|promise}
    */
   SELECT(condition, select, order, from, limit) {
     throw Boom.badImplementation('[adapter] `SELECT` method not implemented');
@@ -134,7 +134,7 @@ class AbstractAdapter {
   /**
    *
    * @param values
-   * @returns {*|promise}
+   * @return {*|promise}
    */
   INSERT(values) {
     throw Boom.badImplementation('[adapter] `INSERT` method not implemented');
@@ -144,7 +144,7 @@ class AbstractAdapter {
    *
    * @param changes
    * @param condition
-   * @returns {*|promise}
+   * @return {*|promise}
    */
   UPDATE(changes, condition) {
     throw Boom.badImplementation('[adapter] `UPDATE` method not implemented');
@@ -153,7 +153,7 @@ class AbstractAdapter {
   /**
    *
    * @param condition
-   * @returns {*|promise}
+   * @return {*|promise}
    */
   DELETE(condition) {
     throw Boom.badImplementation('[adapter] `DELETE` method not implemented');
