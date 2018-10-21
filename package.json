@@ -4,9 +4,9 @@
   "description": "Memory Adapter for ITcutives API",
   "main": "index.js",
   "scripts": {
+    "lint": "npx eslint .",
     "test": "npm run lint && mocha --recursive",
-    "coverage": "./node_modules/.bin/nyc --reporter=lcov --reporter=text npm test",
-    "lint": "npx eslint ."
+    "coverage": "npx nyc --reporter=lcov --reporter=text npm test"
   },
   "repository": {
     "type": "git",
