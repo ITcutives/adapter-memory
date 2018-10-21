@@ -13,7 +13,7 @@ class Connection extends AbstractConnection {
     return true;
   }
 
-  closeConnection() {
+  async closeConnection() {
     return true;
   }
 }
