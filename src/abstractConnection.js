@@ -8,11 +8,11 @@ class AbstractConnection {
   }
 
   openConnection() {
-    throw new Error('Method not implemented');
+    throw new Error('[adapter] `openConnection` method not implemented');
   }
 
   closeConnection() {
-    throw new Error('Method not implemented');
+    throw new Error('[adapter] `closeConnection` method not implemented');
   }
 }
 

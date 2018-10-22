@@ -96,6 +96,14 @@ class AbstractAdapter {
     return true;
   }
 
+  async toLink(fields, ModelPath) {
+    return this.properties;
+  }
+
+  static async fromLink(Cls, object) {
+    return new Cls(object);
+  }
+
   /**
    *
    * @param table
@@ -131,30 +139,23 @@ class AbstractAdapter {
   }
 
   /**
-   *
-   * @param values
    * @return {*|promise}
    */
-  INSERT(values) {
+  INSERT() {
     throw Boom.badImplementation('[adapter] `INSERT` method not implemented');
   }
 
   /**
-   *
-   * @param changes
-   * @param condition
    * @return {*|promise}
    */
-  UPDATE(changes, condition) {
+  UPDATE() {
     throw Boom.badImplementation('[adapter] `UPDATE` method not implemented');
   }
 
   /**
-   *
-   * @param condition
    * @return {*|promise}
    */
-  DELETE(condition) {
+  DELETE() {
     throw Boom.badImplementation('[adapter] `DELETE` method not implemented');
   }
 
