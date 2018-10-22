@@ -5,7 +5,7 @@ const AbstractConnection = require('../src/connection');
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('AbstractConnection', () => {
+describe('Connection', () => {
   let obj;
 
   beforeEach(() => {
@@ -24,7 +24,8 @@ describe('AbstractConnection', () => {
 
   describe('openConnection', () => {
     it('should always resolve true', (done) => {
-      obj.openConnection().should.eventually.eql(true).notify(done);
+      obj.database = { table: [] };
+      obj.openConnection().should.eventually.deep.eql(obj.database).notify(done);
     });
   });
 

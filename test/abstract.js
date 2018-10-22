@@ -214,6 +214,40 @@ describe('abstract', () => {
     });
   });
 
+  describe('toLink', () => {
+    let a;
+
+    beforeEach(() => {
+      Abstract.FIELDS = ['id', 'name'];
+      a = new Abstract({ id: 'A001', name: 'ashish' });
+    });
+
+    afterEach(() => {
+      Abstract.FIELDS = [];
+    });
+
+    it('should resolve with properties of object', (done) => {
+      a.toLink().should.eventually.deep.eql({ id: 'A001', name: 'ashish' }).notify(done);
+    });
+  });
+
+  describe('STATIC fromLink', () => {
+    beforeEach(() => {
+      Abstract.FIELDS = ['id', 'name'];
+    });
+
+    afterEach(() => {
+      Abstract.FIELDS = [];
+    });
+
+    it('should resolve with properties of object', (done) => {
+      Abstract.fromLink(Abstract, { id: 'A001', name: 'ashish' }).should.eventually.deep.eql(new Abstract({
+        id: 'A001',
+        name: 'ashish',
+      })).notify(done);
+    });
+  });
+
   describe('query', () => {
     let a;
     beforeEach(() => {

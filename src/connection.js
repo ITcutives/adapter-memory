@@ -5,12 +5,17 @@
 const AbstractConnection = require('./abstractConnection');
 
 class Connection extends AbstractConnection {
+  constructor(config) {
+    super(config);
+    this.database = {};
+  }
+
   static get TYPE() {
     return 'MEMORY';
   }
 
   async openConnection() {
-    return true;
+    return this.database;
   }
 
   async closeConnection() {
