@@ -106,7 +106,11 @@ class Adapter extends AbstractAdapter {
     limit = limit || this.constructor.PAGESIZE;
     const result = await this.query(table, condition, select, order, from, limit);
     const Cls = this.constructor;
-    return Promise.all(result.map(v => new Cls(v)).map(v => v.deserialise()));
+    return Promise.all(result.map((v) => {
+      const instance = new Cls(v);
+      instance.setOriginal(new Cls(loClone(v)));
+      return instance;
+    }).map(v => v.deserialise()));
   }
 
   /**

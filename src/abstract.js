@@ -7,7 +7,6 @@ const Boom = require('boom');
 class AbstractAdapter {
   constructor(entity) {
     this.properties = {};
-    this.original = {};
     if (entity) {
       this.constructor.FIELDS.forEach((field) => {
         if (entity[field]) {
@@ -65,7 +64,7 @@ class AbstractAdapter {
     const changes = {};
     this.constructor.FIELDS.forEach((field) => {
       const currentValue = this.get(field);
-      if (currentValue && currentValue !== this.original.get(field)) {
+      if (currentValue && this.original && currentValue !== this.original.get(field)) {
         changes[field] = currentValue;
       }
     });

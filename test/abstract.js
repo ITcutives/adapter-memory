@@ -109,7 +109,7 @@ describe('abstract', () => {
     it('should not assign the attribute original if argument has different constructor then instance', () => {
       const b = { id: 1, name: 'b' };
       a.setOriginal(b);
-      a.original.should.not.be.deep.eql(b);
+      (a.original === undefined).should.be.eql(true);
     });
   });
 
