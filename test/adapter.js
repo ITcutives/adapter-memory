@@ -281,11 +281,19 @@ describe('memory', () => {
     });
 
     it('should select all rows of table', (done) => {
-      const expectation = [
-        new Memory({ id: 'aaa1', name: 'a1', age: 10 }),
-        new Memory({ id: 'aaa2', name: 'a2', age: 18 }),
-        new Memory({ id: 'aaa3', name: 'a3', age: 27 }),
+      const objects = [
+        { id: 'aaa1', name: 'a1', age: 10 },
+        { id: 'aaa2', name: 'a2', age: 18 },
+        { id: 'aaa3', name: 'a3', age: 27 },
       ];
+      const expectation = [
+        new Memory(objects[0]),
+        new Memory(objects[1]),
+        new Memory(objects[2]),
+      ];
+      expectation[0].setOriginal(new Memory(objects[0]));
+      expectation[1].setOriginal(new Memory(objects[1]));
+      expectation[2].setOriginal(new Memory(objects[2]));
       memory.SELECT().should.eventually.deep.equal(expectation).notify(done);
     });
 
@@ -293,9 +301,13 @@ describe('memory', () => {
       const condition = {
         id: 'aaa1',
       };
-      const expectation = [
-        new Memory({ id: 'aaa1', name: 'a1', age: 10 }),
+      const objects = [
+        { id: 'aaa1', name: 'a1', age: 10 },
       ];
+      const expectation = [
+        new Memory(objects[0]),
+      ];
+      expectation[0].setOriginal(new Memory(objects[0]));
       memory.SELECT(condition).should.eventually.deep.equal(expectation).notify(done);
     });
 
@@ -306,10 +318,16 @@ describe('memory', () => {
         value: 15,
         condition: 'AND',
       }];
-      const expectation = [
-        new Memory({ id: 'aaa2', name: 'a2', age: 18 }),
-        new Memory({ id: 'aaa3', name: 'a3', age: 27 }),
+      const objects = [
+        { id: 'aaa2', name: 'a2', age: 18 },
+        { id: 'aaa3', name: 'a3', age: 27 },
       ];
+      const expectation = [
+        new Memory(objects[0]),
+        new Memory(objects[1]),
+      ];
+      expectation[0].setOriginal(new Memory(objects[0]));
+      expectation[1].setOriginal(new Memory(objects[1]));
       memory.SELECT(condition).should.eventually.deep.equal(expectation).notify(done);
     });
 
