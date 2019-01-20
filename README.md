@@ -1,5 +1,7 @@
 # @itcutives/adapter-memory
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ITcutives/adapter-memory.svg)](https://greenkeeper.io/)
+
 This repo contains memory adapter for ITcutives Serverless Framework
 
 ## Usage
