@@ -109,3 +109,8 @@ async function init() {
 
 init();
 ```
+
+## Roadmap
+
+- Save and load data from file system
+- CSV vs JSON file support

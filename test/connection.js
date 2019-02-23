@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
-const AbstractConnection = require('../src/connection');
+const Connection = require('../src/connection');
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -9,11 +9,11 @@ describe('Connection', () => {
   let obj;
 
   beforeEach(() => {
-    obj = new AbstractConnection({ db: 'serverless' });
+    obj = new Connection({ db: 'serverless' });
   });
 
   it('should have type MEMORY', () => {
-    AbstractConnection.TYPE.should.be.eql('MEMORY');
+    Connection.TYPE.should.be.eql('MEMORY');
   });
 
   describe('constructor', () => {

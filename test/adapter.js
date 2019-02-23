@@ -236,7 +236,7 @@ describe('memory', () => {
     it('should respond success', (done) => {
       memory.set('id', 'aaa3');
       memory.DELETE().then((affected) => {
-        affected.should.be.eql(1);
+        affected.should.be.eql(true);
         connection.database.table.length.should.be.eql(2);
         done();
       });
@@ -244,7 +244,7 @@ describe('memory', () => {
 
     it('should not find the record to delete, no changes', (done) => {
       memory.set('id', 'aaa4');
-      memory.DELETE().should.eventually.equal(0).notify(done);
+      memory.DELETE().should.eventually.equal(false).notify(done);
     });
 
     it('delete throws exception (no condition)', (done) => {

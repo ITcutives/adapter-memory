@@ -106,11 +106,11 @@ class Adapter extends AbstractAdapter {
     limit = limit || this.constructor.PAGESIZE;
     const result = await this.query(table, condition, select, order, from, limit);
     const Cls = this.constructor;
-    return Promise.all(result.map((v) => {
-      const instance = new Cls(v);
-      instance.setOriginal(new Cls(loClone(v)));
-      return instance;
-    }).map(v => v.deserialise()));
+    const deserialised = await Promise.all(result.map(v => new Cls(v)).map(v => v.deserialise()));
+    return deserialised.map((v) => {
+      v.setOriginal(new Cls(loClone(v.properties)));
+      return v;
+    });
   }
 
   /**
@@ -188,7 +188,7 @@ class Adapter extends AbstractAdapter {
       database[table].splice(index, 1);
       affected += 1;
     });
-    return Promise.resolve(affected);
+    return Promise.resolve(affected > 0);
   }
 
   indexOfFn(list, obj) {
