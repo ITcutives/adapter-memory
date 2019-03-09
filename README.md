@@ -1,5 +1,7 @@
 # @itcutives/adapter-memory
 
+[![Build Status](https://travis-ci.org/ITcutives/adapter-memory.svg?branch=develop)](https://travis-ci.org/ITcutives/adapter-memory)
+
 This repo contains memory adapter for ITcutives Serverless Framework
 
 ## Usage
