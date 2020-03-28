@@ -24,8 +24,7 @@ describe('Connection', () => {
 
   describe('openConnection', () => {
     it('should always resolve true', (done) => {
-      obj.database = { table: [] };
-      obj.openConnection().should.eventually.deep.eql(obj.database).notify(done);
+      obj.openConnection().should.eventually.deep.eql({}).notify(done);
     });
   });
 

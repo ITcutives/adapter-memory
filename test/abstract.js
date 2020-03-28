@@ -88,6 +88,58 @@ describe('abstract', () => {
     });
   });
 
+  describe('setContext', () => {
+    let abstract;
+
+    beforeEach(() => {
+      abstract = new Abstract({});
+    });
+
+    it('should set correct context', () => {
+      abstract.setContext({ uuid: '1111' });
+      abstract.context.should.be.deep.eql({ uuid: '1111' });
+    });
+  });
+
+  describe('getContext', () => {
+    let abstract;
+
+    beforeEach(() => {
+      abstract = new Abstract({});
+    });
+
+    it('should get correct context', () => {
+      abstract.context = { uuid: '1111' };
+      abstract.getContext().should.be.deep.eql({ uuid: '1111' });
+    });
+  });
+
+  describe('setDatabase', () => {
+    let abstract;
+
+    beforeEach(() => {
+      abstract = new Abstract({});
+    });
+
+    it('should set correct database', () => {
+      abstract.setDatabase('mysql_0001_db');
+      abstract.database.should.be.eql('mysql_0001_db');
+    });
+  });
+
+  describe('getDatabase', () => {
+    let abstract;
+
+    beforeEach(() => {
+      abstract = new Abstract({});
+    });
+
+    it('should get correct database', () => {
+      abstract.database = 'mysql_0001_db';
+      abstract.getDatabase().should.be.eql('mysql_0001_db');
+    });
+  });
+
   describe('setOriginal', () => {
     let a;
 
@@ -117,8 +169,10 @@ describe('abstract', () => {
     let a;
 
     beforeEach(() => {
-      Abstract.FIELDS = ['id', 'name'];
-      a = new Abstract({ id: 1, name: 'AA' });
+      Abstract.FIELDS = ['id', 'name', 'view', 'index'];
+      a = new Abstract({
+        id: 1, name: 'AA', view: false, index: 0,
+      });
     });
 
     afterEach(() => {
@@ -126,13 +180,17 @@ describe('abstract', () => {
     });
 
     it('should return changes if found between original and current', () => {
-      const b = new Abstract({ id: 1, name: 'b' });
+      const b = new Abstract({
+        id: 1, name: 'b', view: true, index: 1,
+      });
       a.setOriginal(b);
-      a.getChanges().should.be.deep.eql({ name: 'AA' });
+      a.getChanges().should.be.deep.eql({ name: 'AA', view: false, index: 0 });
     });
 
     it('should return empty object if no changes spotted', () => {
-      const b = new Abstract({ id: 1, name: 'AA' });
+      const b = new Abstract({
+        id: 1, name: 'AA', view: false, index: 0,
+      });
       a.setOriginal(b);
       a.getChanges().should.be.deep.eql({});
     });

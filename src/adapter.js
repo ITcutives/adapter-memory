@@ -47,8 +47,13 @@ class Adapter extends AbstractAdapter {
     return [];
   }
 
-  constructor(entity) {
+  constructor(entity, context) {
     super();
+    // set db name to blank
+    this.setDatabase('');
+    this.setContext(context);
+
+    // if entity object is provided
     if (entity) {
       loForEach(entity, (v, field) => {
         if (this.constructor.FIELDS.indexOf(field) !== -1) {
@@ -75,7 +80,7 @@ class Adapter extends AbstractAdapter {
   }
 
   async query(table, condition, select, order, from, limit) {
-    const database = await Adapter.CONN.openConnection();
+    const database = await Adapter.CONN.openConnection(this.getDatabase());
     if (!database[table]) {
       return Promise.resolve([]);
     }
@@ -122,7 +127,7 @@ class Adapter extends AbstractAdapter {
     }
 
     await this.serialise();
-    const database = await Adapter.CONN.openConnection();
+    const database = await Adapter.CONN.openConnection(this.getDatabase());
     const table = this.getTableName();
 
     if (!database[table]) {
@@ -152,7 +157,7 @@ class Adapter extends AbstractAdapter {
       throw new Error('invalid request (no changes)');
     }
 
-    const database = await Adapter.CONN.openConnection();
+    const database = await Adapter.CONN.openConnection(this.getDatabase());
     const table = this.getTableName();
 
     const result = await this.SELECT(condition);
@@ -179,7 +184,7 @@ class Adapter extends AbstractAdapter {
       id: this.get('id'),
     };
     const table = this.getTableName();
-    const database = await Adapter.CONN.openConnection();
+    const database = await Adapter.CONN.openConnection(this.getDatabase());
     const result = await this.SELECT(condition);
 
     let affected = 0;

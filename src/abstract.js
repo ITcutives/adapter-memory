@@ -3,14 +3,20 @@
  * Created by ashish on 27/4/17.
  */
 const Boom = require('boom');
+const loForEach = require('lodash/forEach');
 
 class AbstractAdapter {
-  constructor(entity) {
+  constructor(entity, context) {
     this.properties = {};
+    // set db name to blank
+    this.setDatabase('');
+    this.setContext(context);
+
+    // if entity object is provided
     if (entity) {
-      this.constructor.FIELDS.forEach((field) => {
-        if (entity[field]) {
-          this.properties[field] = entity[field];
+      loForEach(entity, (v, field) => {
+        if (this.constructor.FIELDS.indexOf(field) !== -1) {
+          this.properties[field] = v;
         }
       });
     }
@@ -38,7 +44,6 @@ class AbstractAdapter {
   }
 
   /**
-   *
    * @return {*}
    */
   static get CONN() {
@@ -46,11 +51,38 @@ class AbstractAdapter {
   }
 
   /**
-   *
    * @param conn
    */
   static set CONN(conn) {
     AbstractAdapter.connection = conn;
+  }
+
+  /**
+   * @param context
+   */
+  setContext(context) {
+    this.context = context;
+  }
+
+  /**
+   * @returns {*}
+   */
+  getContext() {
+    return this.context;
+  }
+
+  /**
+   * @return {string}
+   */
+  getDatabase() {
+    return this.database;
+  }
+
+  /**
+   * @return {string}
+   */
+  setDatabase(db) {
+    this.database = db;
   }
 
   setOriginal(entity) {
@@ -64,7 +96,7 @@ class AbstractAdapter {
     const changes = {};
     this.constructor.FIELDS.forEach((field) => {
       const currentValue = this.get(field);
-      if (currentValue && this.original && currentValue !== this.original.get(field)) {
+      if (currentValue !== undefined && this.original && currentValue !== this.original.get(field)) {
         changes[field] = currentValue;
       }
     });
