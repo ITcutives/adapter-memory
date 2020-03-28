@@ -98,7 +98,6 @@ describe('memory', () => {
     });
   });
 
-
   describe('INSERT', () => {
     let memory;
     let connection;
@@ -106,29 +105,29 @@ describe('memory', () => {
     beforeEach(() => {
       memory = new Memory({});
       Memory.TABLE = 'table';
-      connection = new Connection();
+      connection = new Connection({ db: 'mdb' });
       Memory.CONN = connection;
     });
 
     it('resolve with success', (done) => {
       memory.set('name', 'ashish');
       memory.INSERT().then((id) => {
-        connection.database.should.have.property(Memory.TABLE);
-        connection.database[Memory.TABLE].length.should.be.eql(1);
+        connection.database.mdb.should.have.property(Memory.TABLE);
+        connection.database.mdb[Memory.TABLE].length.should.be.eql(1);
         id.should.be.eql('random-uuid-v1');
-        connection.database[Memory.TABLE][0].should.be.deep.eql({ id: 'random-uuid-v1', name: 'ashish' });
+        connection.database.mdb[Memory.TABLE][0].should.be.deep.eql({ id: 'random-uuid-v1', name: 'ashish' });
         done();
       });
     });
 
     it('should not create table array if it already exists before inserting', (done) => {
       memory.set('name', 'ashish');
-      connection.database[Memory.TABLE] = [];
+      connection.database.mdb = { [Memory.TABLE]: [] };
       memory.INSERT().then((id) => {
-        connection.database.should.have.property(Memory.TABLE);
-        connection.database[Memory.TABLE].length.should.be.eql(1);
+        connection.database.mdb.should.have.property(Memory.TABLE);
+        connection.database.mdb[Memory.TABLE].length.should.be.eql(1);
         id.should.be.eql('random-uuid-v1');
-        connection.database[Memory.TABLE][0].should.be.deep.eql({ id: 'random-uuid-v1', name: 'ashish' });
+        connection.database.mdb[Memory.TABLE][0].should.be.deep.eql({ id: 'random-uuid-v1', name: 'ashish' });
         done();
       });
     });
@@ -145,29 +144,31 @@ describe('memory', () => {
     beforeEach(() => {
       memory = new Memory({});
       Memory.TABLE = 'table';
-      connection = new Connection();
+      connection = new Connection({ db: 'mdb' });
       Memory.CONN = connection;
-      connection.database.table = [
-        {
-          id: 'aaa1',
-          name: 'a1',
-          age: 10,
-        },
-        {
-          id: 'aaa2',
-          name: 'a2',
-          age: 18,
-        },
-        {
-          id: 'aaa3',
-          name: 'a3',
-          age: 27,
-        },
-      ];
+      connection.database.mdb = {
+        table: [
+          {
+            id: 'aaa1',
+            name: 'a1',
+            age: 10,
+          },
+          {
+            id: 'aaa2',
+            name: 'a2',
+            age: 18,
+          },
+          {
+            id: 'aaa3',
+            name: 'a3',
+            age: 27,
+          },
+        ],
+      };
     });
 
     it('should respond success', (done) => {
-      const original = new Memory(connection.database.table[0]);
+      const original = new Memory(connection.database.mdb.table[0]);
       memory = new Memory({ name: 'ashish' });
       memory.setOriginal(original);
       const expectation = {
@@ -177,29 +178,29 @@ describe('memory', () => {
       };
       memory.UPDATE().then((changes) => {
         changes.should.be.equal(1);
-        connection.database.should.have.property(Memory.TABLE);
-        connection.database[Memory.TABLE].length.should.be.eql(3);
-        connection.database[Memory.TABLE][0].should.be.deep.eql(expectation);
+        connection.database.mdb.should.have.property(Memory.TABLE);
+        connection.database.mdb[Memory.TABLE].length.should.be.eql(3);
+        connection.database.mdb[Memory.TABLE][0].should.be.deep.eql(expectation);
         done();
       });
     });
 
     it('should not find the record so no changes to be made', (done) => {
       Memory.TABLE = 'table2';
-      const original = new Memory(connection.database.table[0]);
+      const original = new Memory(connection.database.mdb.table[0]);
       memory = new Memory({ name: 'ashish' });
       memory.setOriginal(original);
       memory.UPDATE().should.eventually.equal(0).notify(done);
     });
 
     it('should throw exception (no condition)', (done) => {
-      memory = new Memory(connection.database.table[0]);
+      memory = new Memory(connection.database.mdb.table[0]);
       memory.UPDATE().should.be.rejectedWith(Error, 'bad conditions').notify(done);
     });
 
     it('should throw exception (no changes)', (done) => {
-      const original = new Memory(connection.database.table[0]);
-      memory = new Memory(connection.database.table[0]);
+      const original = new Memory(connection.database.mdb.table[0]);
+      memory = new Memory(connection.database.mdb.table[0]);
       memory.setOriginal(original);
       memory.UPDATE().should.be.rejectedWith(Error, 'invalid request (no changes)').notify(done);
     });
@@ -212,39 +213,41 @@ describe('memory', () => {
     beforeEach(() => {
       memory = new Memory({});
       Memory.TABLE = 'table';
-      connection = new Connection();
+      connection = new Connection({ db: 'mdb' });
       Memory.CONN = connection;
-      connection.database.table = [
-        {
-          id: 'aaa1',
-          name: 'a1',
-          age: 10,
-        },
-        {
-          id: 'aaa2',
-          name: 'a2',
-          age: 18,
-        },
-        {
-          id: 'aaa3',
-          name: 'a3',
-          age: 27,
-        },
-      ];
+      connection.database.mdb = {
+        table: [
+          {
+            id: 'aaa1',
+            name: 'a1',
+            age: 10,
+          },
+          {
+            id: 'aaa2',
+            name: 'a2',
+            age: 18,
+          },
+          {
+            id: 'aaa3',
+            name: 'a3',
+            age: 27,
+          },
+        ],
+      };
     });
 
     it('should respond success', (done) => {
       memory.set('id', 'aaa3');
       memory.DELETE().then((affected) => {
-        affected.should.be.eql(1);
-        connection.database.table.length.should.be.eql(2);
+        affected.should.be.eql(true);
+        connection.database.mdb.table.length.should.be.eql(2);
         done();
       });
     });
 
     it('should not find the record to delete, no changes', (done) => {
       memory.set('id', 'aaa4');
-      memory.DELETE().should.eventually.equal(0).notify(done);
+      memory.DELETE().should.eventually.equal(false).notify(done);
     });
 
     it('delete throws exception (no condition)', (done) => {
@@ -259,25 +262,27 @@ describe('memory', () => {
     beforeEach(() => {
       memory = new Memory({});
       Memory.TABLE = 'table';
-      connection = new Connection();
+      connection = new Connection({ db: 'mdb' });
       Memory.CONN = connection;
-      connection.database.table = [
-        {
-          id: 'aaa1',
-          name: 'a1',
-          age: 10,
-        },
-        {
-          id: 'aaa2',
-          name: 'a2',
-          age: 18,
-        },
-        {
-          id: 'aaa3',
-          name: 'a3',
-          age: 27,
-        },
-      ];
+      connection.database.mdb = {
+        table: [
+          {
+            id: 'aaa1',
+            name: 'a1',
+            age: 10,
+          },
+          {
+            id: 'aaa2',
+            name: 'a2',
+            age: 18,
+          },
+          {
+            id: 'aaa3',
+            name: 'a3',
+            age: 27,
+          },
+        ],
+      };
     });
 
     it('should select all rows of table', (done) => {
@@ -350,9 +355,9 @@ describe('memory', () => {
         age: 18,
       };
       memory.SELECT(condition).then((res) => {
-        res[0].properties.should.be.deep.eql(connection.database.table[1]);
+        res[0].properties.should.be.deep.eql(connection.database.mdb.table[1]);
         delete res[0].properties.name;
-        res[0].properties.should.not.be.deep.eql(connection.database.table[1]);
+        res[0].properties.should.not.be.deep.eql(connection.database.mdb.table[1]);
         done();
       });
     });

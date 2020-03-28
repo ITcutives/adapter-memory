@@ -14,8 +14,13 @@ class Connection extends AbstractConnection {
     return 'MEMORY';
   }
 
-  async openConnection() {
-    return this.database;
+  async openConnection(db) {
+    const database = db || this.config.db;
+    if (this.database[database]) {
+      return this.database[database];
+    }
+    this.database[database] = {};
+    return this.database[database];
   }
 
   async closeConnection() {
