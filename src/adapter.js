@@ -94,7 +94,7 @@ class Adapter extends AbstractAdapter {
       return this.matchObjectConditions(condition, item);
     });
 
-    return result.map(r => loClone(r));
+    return result.map((r) => loClone(r));
   }
 
   /**
@@ -111,7 +111,7 @@ class Adapter extends AbstractAdapter {
     limit = limit || this.constructor.PAGESIZE;
     const result = await this.query(table, condition, select, order, from, limit);
     const Cls = this.constructor;
-    const deserialised = await Promise.all(result.map(v => new Cls(v)).map(v => v.deserialise()));
+    const deserialised = await Promise.all(result.map((v) => new Cls(v)).map((v) => v.deserialise()));
     return deserialised.map((v) => {
       v.setOriginal(new Cls(loClone(v.properties)));
       return v;
