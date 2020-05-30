@@ -7,7 +7,7 @@ const chaiAsPromised = require('chai-as-promised');
 const proxyquire = require('proxyquire');
 
 const Adapter = proxyquire('../src/adapter', {
-  'uuid/v1': () => 'random-uuid-v1',
+  uuid: ({ v1: () => 'random-uuid-v1' }),
 });
 
 const Memory = proxyquire('./extras/model', {

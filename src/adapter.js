@@ -3,7 +3,7 @@
  * Created by ashish on 02/05/18.
  */
 const Boom = require('boom');
-const UuidV1 = require('uuid/v1');
+const UuidV1 = require('uuid').v1;
 const loForEach = require('lodash/forEach');
 const loIsEmpty = require('lodash/isEmpty');
 const loClone = require('lodash/clone');

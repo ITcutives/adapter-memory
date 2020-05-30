@@ -4,6 +4,9 @@
  */
 const Boom = require('boom');
 const loForEach = require('lodash/forEach');
+const loGet = require('lodash/get');
+const loSet = require('lodash/set');
+const loUnset = require('lodash/unset');
 
 class AbstractAdapter {
   constructor(entity, context) {
@@ -108,7 +111,7 @@ class AbstractAdapter {
       this.properties = {};
     }
     if (this.constructor.FIELDS.indexOf(key) !== -1) {
-      this.properties[key] = value;
+      loSet(this.properties, key, value);
     }
   }
 
@@ -116,15 +119,14 @@ class AbstractAdapter {
     if (!this.properties) {
       return undefined;
     }
-    return this.properties[key];
+    return loGet(this.properties, key, undefined);
   }
 
   remove(key) {
     if (!this.properties) {
       return false;
     }
-    delete this.properties[key];
-    return true;
+    return loUnset(this.properties, key);
   }
 
   async toLink(fields, ModelPath) {
