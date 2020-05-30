@@ -200,7 +200,7 @@ describe('abstract', () => {
     let a;
 
     beforeEach(() => {
-      Abstract.FIELDS = ['id', 'name'];
+      Abstract.FIELDS = ['id', 'name', 'json.field'];
       a = new Abstract();
     });
 
@@ -218,13 +218,18 @@ describe('abstract', () => {
       a.set('id', '2');
       a.properties.should.be.deep.eql({ id: '2' });
     });
+
+    it('should set the properties with key/value for nested field', () => {
+      a.set('json.field', '2');
+      a.properties.should.be.deep.eql({ json: { field: '2' } });
+    });
   });
 
   describe('get', () => {
     let a;
 
     beforeEach(() => {
-      Abstract.FIELDS = ['id', 'name'];
+      Abstract.FIELDS = ['id', 'name', 'json.field'];
       a = new Abstract();
     });
 
@@ -246,13 +251,18 @@ describe('abstract', () => {
       a.set('id', '2');
       a.get('id').should.be.eql('2');
     });
+
+    it('should return value associated with key (jsonPath)', () => {
+      a.set('json.field', '2');
+      a.get('json.field').should.be.eql('2');
+    });
   });
 
   describe('remove', () => {
     let a;
 
     beforeEach(() => {
-      Abstract.FIELDS = ['id', 'name'];
+      Abstract.FIELDS = ['id', 'name', 'json.field'];
       a = new Abstract();
     });
 
@@ -269,6 +279,14 @@ describe('abstract', () => {
       a.set('id', '2');
       a.remove('id').should.be.eql(true);
       a.properties.should.be.deep.eql({});
+    });
+
+    it('should try and remove the property provided (json path)', () => {
+      a.set('id', '2');
+      a.set('json.field', '2');
+      a.properties.should.be.deep.eql({ id: '2', json: { field: '2' } });
+      a.remove('json.field').should.be.eql(true);
+      a.properties.should.be.deep.eql({ id: '2', json: {} });
     });
   });
 
