@@ -3,7 +3,6 @@
  * Created by ashish on 27/4/17.
  */
 const Boom = require('boom');
-const loForEach = require('lodash/forEach');
 const loGet = require('lodash/get');
 const loSet = require('lodash/set');
 const loUnset = require('lodash/unset');
@@ -17,9 +16,10 @@ class AbstractAdapter {
 
     // if entity object is provided
     if (entity) {
-      loForEach(entity, (v, field) => {
-        if (this.constructor.FIELDS.indexOf(field) !== -1) {
-          this.properties[field] = v;
+      this.constructor.FIELDS.forEach((field) => {
+        const value = loGet(entity, field);
+        if (value !== undefined) {
+          this.set(field, value);
         }
       });
     }
@@ -100,7 +100,7 @@ class AbstractAdapter {
     this.constructor.FIELDS.forEach((field) => {
       const currentValue = this.get(field);
       if (currentValue !== undefined && this.original && currentValue !== this.original.get(field)) {
-        changes[field] = currentValue;
+        loSet(changes, field, currentValue);
       }
     });
     return changes;

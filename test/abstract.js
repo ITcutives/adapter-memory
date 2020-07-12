@@ -169,9 +169,9 @@ describe('abstract', () => {
     let a;
 
     beforeEach(() => {
-      Abstract.FIELDS = ['id', 'name', 'view', 'index'];
+      Abstract.FIELDS = ['id', 'name', 'view', 'index', 'config.test'];
       a = new Abstract({
-        id: 1, name: 'AA', view: false, index: 0,
+        id: 1, name: 'AA', view: false, index: 0, config: { test: 'abc' },
       });
     });
 
@@ -181,15 +181,17 @@ describe('abstract', () => {
 
     it('should return changes if found between original and current', () => {
       const b = new Abstract({
-        id: 1, name: 'b', view: true, index: 1,
+        id: 1, name: 'b', view: true, index: 1, config: { test: 'xyz' },
       });
       a.setOriginal(b);
-      a.getChanges().should.be.deep.eql({ name: 'AA', view: false, index: 0 });
+      a.getChanges().should.be.deep.eql({
+        name: 'AA', view: false, index: 0, config: { test: 'abc' },
+      });
     });
 
     it('should return empty object if no changes spotted', () => {
       const b = new Abstract({
-        id: 1, name: 'AA', view: false, index: 0,
+        id: 1, name: 'AA', view: false, index: 0, config: { test: 'abc' },
       });
       a.setOriginal(b);
       a.getChanges().should.be.deep.eql({});
