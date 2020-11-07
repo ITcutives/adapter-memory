@@ -159,7 +159,6 @@ class AbstractAdapter {
   }
 
   /**
-   *
    * @param condition
    * @param select
    * @param order
@@ -169,6 +168,14 @@ class AbstractAdapter {
    */
   SELECT(condition, select, order, from, limit) {
     throw Boom.badImplementation('[adapter] `SELECT` method not implemented');
+  }
+
+  /**
+   * @param condition
+   * @constructor
+   */
+  COUNT(condition) {
+    throw Boom.badImplementation('[adapter] `COUNT` method not implemented');
   }
 
   /**

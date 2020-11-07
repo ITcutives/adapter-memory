@@ -82,7 +82,7 @@ class Adapter extends AbstractAdapter {
   async query(table, condition, select, order, from, limit) {
     const database = await Adapter.CONN.openConnection(this.getDatabase());
     if (!database[table]) {
-      return Promise.resolve([]);
+      return [];
     }
 
     condition = this.fixConditionList(condition);
@@ -116,6 +116,12 @@ class Adapter extends AbstractAdapter {
       v.setOriginal(new Cls(loClone(v.properties)));
       return v;
     });
+  }
+
+  async COUNT(condition = []) {
+    const table = this.getTableName();
+    const result = await this.query(table, condition);
+    return result.length;
   }
 
   /**
