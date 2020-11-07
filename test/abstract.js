@@ -367,6 +367,20 @@ describe('abstract', () => {
     });
   });
 
+  describe('COUNT', () => {
+    let a;
+
+    beforeEach(() => {
+      a = new Abstract();
+    });
+
+    it('should throw exception', () => {
+      (() => {
+        a.COUNT();
+      }).should.throw('[adapter] `COUNT` method not implemented');
+    });
+  });
+
   describe('INSERT', () => {
     let a;
 
