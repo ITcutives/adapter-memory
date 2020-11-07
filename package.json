@@ -1,6 +1,6 @@
 {
   "name": "@itcutives/adapter-memory",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Memory Adapter for ITcutives API",
   "main": "index.js",
   "scripts": {
@@ -26,18 +26,18 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "mocha": "^8.0.1",
+    "mocha": "^8.2.1",
     "nyc": "^15.1.0",
     "proxyquire": "^2.1.3",
-    "sinon": "^9.0.2",
+    "sinon": "^9.2.1",
     "sinon-chai": "^3.5.0",
-    "eslint": "^7.4.0",
-    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint": "^7.13.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.0"
   },
   "dependencies": {
     "boom": "^7.3.0",
-    "lodash": "^4.17.19",
-    "uuid": "^8.2.0"
+    "lodash": "^4.17.20",
+    "uuid": "^8.3.1"
   }
 }

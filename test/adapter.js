@@ -363,6 +363,70 @@ describe('memory', () => {
     });
   });
 
+  describe('COUNT', () => {
+    let memory;
+    let connection;
+
+    beforeEach(() => {
+      memory = new Memory({});
+      Memory.TABLE = 'table';
+      connection = new Connection({ db: 'mdb' });
+      Memory.CONN = connection;
+      connection.database.mdb = {
+        table: [
+          {
+            id: 'aaa1',
+            name: 'a1',
+            age: 10,
+          },
+          {
+            id: 'aaa2',
+            name: 'a2',
+            age: 18,
+          },
+          {
+            id: 'aaa3',
+            name: 'a3',
+            age: 27,
+          },
+        ],
+      };
+    });
+
+    it('should select all rows of table', (done) => {
+      memory.COUNT().should.eventually.equal(3).notify(done);
+    });
+
+    it('should count all where it matches condition (one record)', (done) => {
+      const condition = {
+        id: 'aaa1',
+      };
+      memory.COUNT(condition).should.eventually.equal(1).notify(done);
+    });
+
+    it('should count all where it matches condition (multiple records)', (done) => {
+      const condition = [{
+        field: 'age',
+        operator: '>=',
+        value: 15,
+        condition: 'AND',
+      }];
+      memory.COUNT(condition).should.eventually.deep.equal(2).notify(done);
+    });
+
+    it('should return 0 if nothing matches condition', (done) => {
+      const condition = {
+        age: 30,
+      };
+      memory.COUNT(condition).should.eventually.deep.equal(0).notify(done);
+    });
+
+    it('should return 0 if table is not defined', (done) => {
+      memory.constructor.TABLE = 'table2';
+      memory.COUNT().should.eventually.deep.equal(0).notify(done);
+    });
+  });
+
   describe('matchObjectConditions', () => {
     let memory;
     let object;
