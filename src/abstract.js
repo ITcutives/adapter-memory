@@ -2,7 +2,7 @@
 /**
  * Created by ashish on 27/4/17.
  */
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const loGet = require('lodash/get');
 const loSet = require('lodash/set');
 const loUnset = require('lodash/unset');
